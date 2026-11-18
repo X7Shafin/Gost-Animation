@@ -12,7 +12,7 @@ Facebook: https://www.facebook.com/share/1E8gkJwn2c/
 pkg update -y && pkg install git -y
 ```
 ```bash
-git clone https://github.com/YOUR_USERNAME/X7Shafin
+git clone https://github.com/X7Shafin/X7Shafin
 ```
 ```bash
 cd X7Shafin
