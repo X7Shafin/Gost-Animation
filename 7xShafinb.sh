@@ -13,12 +13,12 @@ say "Backing up old .bashrc to ~/.bashrc.bak"
 [ -f ~/.bashrc ] && cp ~/.bashrc ~/.bashrc.bak
 
 say "Removing old files"
-rm -f ~/fontx.py ~/GhostX_Hacker.py ~/ghostx_anim.sh
+rm -f ~/fontx.py ~/GhostX_Hacker.py ~/ghostx_anim.sh ~/x7anim.sh
 
 say "Copying X7Shafin files"
 # Looks next to this script first (git clone), then in the Download folder
 SRC="$(cd "$(dirname "$0")" && pwd)"
-for f in X7Shafin.py x7anim.sh; do
+for f in X7Shafin.py gost_anim.sh; do
   if [ -f "$SRC/$f" ] && [ "$SRC" != "$HOME" ]; then
     cp "$SRC/$f" ~/"$f"
   elif [ -f "/sdcard/Download/$f" ]; then
@@ -26,7 +26,7 @@ for f in X7Shafin.py x7anim.sh; do
   fi
 done
 [ -f ~/X7Shafin.py ] || echo -e "${R}[!] X7Shafin.py not found.${N}"
-[ -f ~/x7anim.sh ]   || echo -e "${R}[!] x7anim.sh not found.${N}"
+[ -f ~/gost_anim.sh ] || echo -e "${R}[!] gost_anim.sh not found.${N}"
 
 say "Writing clean .bashrc"
 cat > ~/.bashrc <<'EOT'
@@ -39,7 +39,7 @@ alias cls='clear && python ~/X7Shafin.py -q 2>/dev/null'
 alias banner='python ~/X7Shafin.py 2>/dev/null'
 alias update='pkg update && pkg upgrade'
 
-[ -f ~/x7anim.sh ] && source ~/x7anim.sh
+[ -f ~/gost_anim.sh ] && source ~/gost_anim.sh
 [ -f ~/X7Shafin.py ] && python ~/X7Shafin.py -q 2>/dev/null
 EOT
 
