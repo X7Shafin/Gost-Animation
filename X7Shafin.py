@@ -91,6 +91,8 @@ def banner():
     info.append(" ".join(NAME) + "\n", style="bold white")
     info.append("[BRAND]  ", style="bold #00ff41")
     info.append(BRAND + "\n", style="white")
+    info.append("[ANIM]   ", style="bold #00ff41")
+    info.append("Gost Animation\n", style="white")
     info.append("[TG]     ", style="bold #00ff41")
     info.append(TELEGRAM + "\n", style="underline cyan")
     info.append("[FB]     ", style="bold #00ff41")
@@ -136,7 +138,7 @@ def welcome():
         return out + rgb("#00801e") + suffix + RESET
 
     def show(done, glow=-10):
-        sys.stdout.write("\r" + pad + render(done, glow))
+        sys.stdout.write("\r" + pad + render(done, glow) + "\033[K")
         sys.stdout.flush()
 
     if ANIMATE:
