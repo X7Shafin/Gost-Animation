@@ -267,9 +267,14 @@ apt()     { _x7_pkgish apt "$@"; }
 apt-get() { _x7_pkgish apt-get "$@"; }
 
 git() {
+  # Prompts are turned off while animating, so git fails fast instead of waiting on a hidden prompt
   case "$1" in
-    clone) x7_run "GIT CLONE" command git "$@"; local s=$?; brand; return $s ;;
-    pull|fetch) x7_run "GIT ${1^^}" command git "$@" ;;
+    clone)
+      GIT_TERMINAL_PROMPT=0 x7_run "GIT CLONE" command git "$@"
+      local s=$?
+      (( s == 0 )) && brand
+      return $s ;;
+    pull|fetch) GIT_TERMINAL_PROMPT=0 x7_run "GIT ${1^^}" command git "$@" ;;
     *) x7_anim "GIT ${1^^}"; command git "$@" ;;
   esac
 }
