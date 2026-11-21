@@ -1,4 +1,4 @@
-# x7anim.sh - X7Shafin: skull animation on every command + permission colors
+# gost_anim.sh - Gost Animation (X7Shafin): skull animation on every command + permission colors
 # Source this from ~/.bashrc
 
 X7_ANIM=1
@@ -30,7 +30,7 @@ _x7_color_stream() {
   while IFS= read -r line || [ -n "$line" ]; do
     l=${line,,}
     if [[ $l == *"permission denied"* || $l == *"access denied"* || $l == *forbidden* \
-       || $l == *"cannot access"* || $l == *"cannot open"* || $l == *"unable to"* \
+       || $l == *"cannot "* || $l == *"unable to"* || $l == *"file exists"* \
        || $l == *error* || $l == *fatal* || $l == *failed* ]]; then
       c=$_X7_R
     elif [[ $l == *"not permitted"* || $l == *"no permission"* || $l == *"read-only"* \
@@ -152,13 +152,13 @@ _x7_draw() {
   printf '\e[9A'
   printf '%s\e[K\n' "        ${G1}▄▄████████▄▄${N}"
   printf '%s\e[K\n' "      ${G1}▄██████████████▄${N}   ${CY}X 7 S H A F I N${N}"
-  printf '%s\e[K\n' "     ${sh}${G1}██████████████████${N}  ${MG}H A C K E R${N}"
+  printf '%s\e[K\n' "     ${sh}${G1}██████████████████${N}  ${MG}G O S T${N}"
   printf '%s\e[K\n' "     ${G1}███${eye}▄██▄${G1}████${eye}▄██▄${G1}███${N}"
   printf '%s\e[K\n' "     ${G1}███${eye}▀██▀${G1}█▄▄█${eye}▀██▀${G1}███${N}  ${WH}${msg}${N}"
   printf '%s\e[K\n' "      ${G2}▀██${CY} █ █ █ █ ${G2}██▀${N}"
   printf '%s\e[K\n' "        ${MG}▀▀████████▀▀${N}"
   printf '%s\e[K\n' "   ${G1}[${bar}${G1}]${N}"
-  printf '%s\e[K\n' "   ${YL}Powered by X7Shafin${N}"
+  printf '%s\e[K\n' "   ${YL}Gost Animation | Powered by X7Shafin${N}"
 }
 
 _x7_bar_fill() {  # filled bar, $1 = 0..20
@@ -199,7 +199,7 @@ x7_run() {
   [[ $- == *m* ]] && hadm=1
   set +m
   log=$(mktemp)
-  "$@" >"$log" 2>&1 </dev/null &
+  { "$@" >"$log" 2>&1 </dev/null & } 2>/dev/null
   pid=$!
   trap 'kill "$pid" 2>/dev/null' INT
 
@@ -222,7 +222,9 @@ x7_run() {
   trap - INT
   (( hadm )) && set -m
   (( shown )) && printf '\e[9A\e[J'
-  _x7_color_stream <"$log"; rm -f "$log"
+  # apt prints a harmless "stable CLI interface" warning when its output goes to a file; hide it
+  sed -z 's/\n*WARNING: apt does not have a stable CLI interface\. Use with caution in scripts\.\n*/\n/g' "$log" | _x7_color_stream
+  rm -f "$log"
 
   if (( shown )); then
     if [ $rc -eq 0 ]; then
@@ -290,6 +292,7 @@ _x7_debug() {
   [ "$_x7_ready" = 1 ] || return 0
   _x7_ready=0
   [ "$X7_ANIM" = "0" ] && return 0
+  [[ $BASH_COMMAND == *X7Shafin.py* ]] && return 0
   local first=${BASH_COMMAND%% *}
   case "$X7_SKIP$X7_WRAPPED" in *" $first "*) return 0 ;; esac
   x7_anim "${first^^}"
